@@ -55,10 +55,40 @@ class _loginPageState extends State<loginPage> {
               ),
             ),
             Container(
-              child: ElevatedButton(onPressed: () {}, child: Text('Login'),
-              style: ButtonStyle(
-                
-              )),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+
+                      child: Text('Login'),
+
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(150, 40),
+                        foregroundColor: Colors.black,
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // No radius
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Login'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(150, 40),
+                        foregroundColor: Colors.black,
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // No radius
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
