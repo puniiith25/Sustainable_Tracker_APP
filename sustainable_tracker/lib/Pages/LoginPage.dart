@@ -54,37 +54,14 @@ class _loginPageState extends State<loginPage> {
                 ],
               ),
             ),
-            Container(
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                child: Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () {},
-
-                      child: Text('Login'),
-
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(150, 40),
-                        foregroundColor: Colors.black,
-
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // No radius
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Login'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(150, 40),
-                        foregroundColor: Colors.black,
-
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // No radius
-                        ),
-                      ),
+                    Text("Email", textAlign: TextAlign.left),
+                    TextField(
+                      decoration: InputDecoration(border: OutlineInputBorder()),
                     ),
                   ],
                 ),
