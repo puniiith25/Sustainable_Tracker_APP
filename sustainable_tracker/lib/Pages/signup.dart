@@ -1,261 +1,301 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+// class loginPage extends StatefulWidget {
+//   const loginPage({super.key});
 
-  @override
-  State<SignInPage> createState() => _SignInPageState();
-}
+//   @override
+//   State<loginPage> createState() => _loginPageState();
+// }
 
-class _SignInPageState extends State<SignInPage> with TickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
+// class _loginPageState extends State<loginPage> with TickerProviderStateMixin {
+//   // Form key to validate all input fields
+//   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+//   // Controllers to read user input values
+//   final TextEditingController _nameController = TextEditingController();
+//   final TextEditingController _emailController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
 
-  bool isLogin = true; // true = Sign In, false = Sign Up
-  bool _obscurePassword = true;
+//   // This variable controls whether we are in Login or Sign-up mode
+//   bool isLogin = true;
 
-  // VALIDATORS
-  String? _validateName(String? v) {
-    if (!isLogin) {
-      if (v == null || v.trim().isEmpty) return 'Please enter name';
-      if (v.trim().length < 2) return 'Name too short';
-    }
-    return null;
-  }
+//   // For showing or hiding password
+//   bool _obscurePassword = true;
 
-  String? _validateEmail(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Please enter email';
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(v.trim())) return 'Enter valid email';
-    return null;
-  }
+//   // -------------------- VALIDATION FUNCTIONS --------------------
 
-  String? _validatePassword(String? v) {
-    if (v == null || v.isEmpty) return 'Please enter password';
-    if (v.length < 6) return 'Minimum 6 characters';
-    return null;
-  }
+//   String? _validateName(String? v) {
+//     // Only validate name in SIGN-UP mode
+//     if (!isLogin) {
+//       if (v == null || v.trim().isEmpty) return 'Please enter name';
+//       if (v.trim().length < 2) return 'Name too short';
+//     }
+//     return null;
+//   }
 
-  // SUBMIT FUNCTION
-  void _handleSubmit() {
-    if (!_formKey.currentState!.validate()) return;
+//   String? _validateEmail(String? v) {
+//     if (v == null || v.trim().isEmpty) return 'Please enter email';
+//     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+//     if (!emailRegex.hasMatch(v.trim())) return 'Enter a valid email';
+//     return null;
+//   }
 
-    final name = _nameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
+//   String? _validatePassword(String? v) {
+//     if (v == null || v.isEmpty) return 'Please enter password';
+//     if (v.length < 6) return 'Password should be at least 6 chars';
+//     return null;
+//   }
 
-    if (isLogin) {
-      debugPrint("SIGN IN -> Email: $email Password: $password");
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Signed In (demo)")));
-    } else {
-      debugPrint("SIGN UP -> Name: $name Email: $email Password: $password");
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Account Created (demo)")));
-    }
-  }
+//   // -------------------- SUBMIT HANDLER --------------------
 
-  // Toggle Sign In / Sign Up
-  void _toggleMode() {
-    setState(() {
-      isLogin = !isLogin;
-      if (isLogin) _nameController.clear();
-    });
-  }
+//   void _handleSubmit() {
+//     // Validate all fields first
+//     if (!_formKey.currentState!.validate()) return;
 
-  @override
-  Widget build(BuildContext context) {
-    final titleText = isLogin ? "Sign In" : "Create Account";
-    final buttonText = isLogin ? "Sign In" : "Sign Up";
-    final switchText = isLogin
-        ? "Don't have an account? Sign Up"
-        : "Already have an account? Sign In";
+//     final name = _nameController.text.trim();
+//     final email = _emailController.text.trim();
+//     final password = _passwordController.text;
 
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // LOGO
-              Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(
-                  child: Icon(
-                    FontAwesomeIcons.leaf,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+//     if (isLogin) {
+//       // LOGIN LOGIC HERE
+//       debugPrint("LOGIN -> Email: $email Password: $password");
 
-              const SizedBox(height: 20),
+//       ScaffoldMessenger.of(context)
+//           .showSnackBar(const SnackBar(content: Text("Logged in (demo)")));
+//     } else {
+//       // SIGNUP LOGIC HERE
+//       debugPrint("SIGNUP -> Name: $name Email: $email Password: $password");
 
-              // TITLE TEXT
-              Column(
-                children: [
-                  Text(
-                    "Sustainable Shopping",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green.withOpacity(0.9),
-                    ),
-                  ),
-                  const Text(
-                    'Track your carbon footprint',
-                    style: TextStyle(color: Colors.black87),
-                  ),
-                ],
-              ),
+//       ScaffoldMessenger.of(context)
+//           .showSnackBar(const SnackBar(content: Text("Signed up (demo)")));
+//     }
+//   }
 
-              const SizedBox(height: 20),
+//   // -------------------- TOGGLE LOGIN / SIGNUP --------------------
 
-              // FORM
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Text(
-                            titleText,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+//   void _toggleMode() {
+//     setState(() {
+//       // Switch between Login & SignUp modes
+//       isLogin = !isLogin;
 
-                          // NAME FIELD (only for Sign Up)
-                          AnimatedSize(
-                            duration: const Duration(milliseconds: 200),
-                            child: isLogin
-                                ? const SizedBox.shrink()
-                                : Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text("Name"),
-                                      const SizedBox(height: 5),
-                                      TextFormField(
-                                        controller: _nameController,
-                                        validator: _validateName,
-                                        decoration: _inputBox(
-                                          "Enter your name",
-                                        ),
-                                      ),
-                                      const SizedBox(height: 15),
-                                    ],
-                                  ),
-                          ),
+//       // Clear name when switching back to login
+//       if (isLogin) {
+//         _nameController.clear();
+//       }
+//     });
+//   }
 
-                          // EMAIL FIELD
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Email"),
-                          ),
-                          const SizedBox(height: 5),
-                          TextFormField(
-                            controller: _emailController,
-                            validator: _validateEmail,
-                            decoration: _inputBox("Enter your email"),
-                          ),
-                          const SizedBox(height: 15),
+//   @override
+//   void dispose() {
+//     // Dispose controllers to free memory
+//     _nameController.dispose();
+//     _emailController.dispose();
+//     _passwordController.dispose();
+//     super.dispose();
+//   }
 
-                          // PASSWORD FIELD
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Password"),
-                          ),
-                          const SizedBox(height: 5),
-                          TextFormField(
-                            controller: _passwordController,
-                            validator: _validatePassword,
-                            obscureText: _obscurePassword,
-                            decoration: _inputBox("Enter your password")
-                                .copyWith(
-                                  suffixIcon: IconButton(
-                                    onPressed: () => setState(
-                                      () =>
-                                          _obscurePassword = !_obscurePassword,
-                                    ),
-                                    icon: Icon(
-                                      _obscurePassword
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                    ),
-                                  ),
-                                ),
-                          ),
+//   // -------------------- UI STARTS HERE --------------------
 
-                          const SizedBox(height: 20),
+//   @override
+//   Widget build(BuildContext context) {
+//     // Text changes based on mode
+//     final titleText = isLogin ? 'Login' : 'Create Account';
+//     final buttonText = isLogin ? 'Login' : 'Sign Up';
+//     final switchText =
+//         isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
 
-                          // BUTTON
-                          SizedBox(
-                            width: 180,
-                            child: ElevatedButton(
-                              onPressed: _handleSubmit,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                              ),
-                              child: Text(
-                                buttonText,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
+//     return Scaffold(
+//       body: Center(
+//         child: SingleChildScrollView(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               // -------------------- APP ICON --------------------
+//               Container(
+//                 width: 70,
+//                 height: 70,
+//                 decoration: BoxDecoration(
+//                   color: Colors.green,
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//                 child: const Center(
+//                   child: Icon(FontAwesomeIcons.leaf,
+//                       size: 30, color: Colors.white),
+//                 ),
+//               ),
 
-                          // SWITCH SIGN IN / SIGN UP
-                          TextButton(
-                            onPressed: _toggleMode,
-                            child: Text(
-                              switchText,
-                              style: const TextStyle(
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+//               const SizedBox(height: 20),
 
-  // Input decoration shortcut
-  InputDecoration _inputBox(String hint) {
-    return InputDecoration(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-      hintText: hint,
-    );
-  }
-}
+//               // -------------------- TITLE TEXT --------------------
+//               Column(
+//                 children: [
+//                   Text(
+//                     "Sustainable Shoping",
+//                     style: TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: Colors.green.withOpacity(0.9),
+//                     ),
+//                   ),
+//                   const Text(
+//                     'Track your carbon footprint',
+//                     style: TextStyle(
+//                       fontWeight: FontWeight.w400,
+//                       color: Colors.black,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+
+//               const SizedBox(height: 20),
+
+//               // -------------------- FORM CARD --------------------
+//               Padding(
+//                 padding: const EdgeInsets.all(25.0),
+//                 child: Card(
+//                   elevation: 5,
+//                   shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(12)),
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(20.0),
+
+//                     // FORM STARTS HERE
+//                     child: Form(
+//                       key: _formKey,
+//                       child: Column(
+//                         children: [
+//                           // FORM TITLE
+//                           Text(
+//                             titleText,
+//                             style: const TextStyle(
+//                                 fontSize: 18, fontWeight: FontWeight.w600),
+//                           ),
+//                           const SizedBox(height: 20),
+
+//                           // -------------------- NAME FIELD (Sign-Up only) --------------------
+//                           AnimatedSize(
+//                             duration: const Duration(milliseconds: 200),
+//                             curve: Curves.easeInOut,
+//                             child: isLogin
+//                                 ? const SizedBox.shrink() // Hide in login
+//                                 : Column(
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.start,
+//                                     children: [
+//                                       const Text("Name",
+//                                           style: TextStyle(
+//                                               fontWeight: FontWeight.w400)),
+//                                       const SizedBox(height: 5),
+//                                       TextFormField(
+//                                         controller: _nameController,
+//                                         validator: _validateName,
+//                                         decoration: InputDecoration(
+//                                           border: OutlineInputBorder(
+//                                             borderRadius:
+//                                                 BorderRadius.circular(8),
+//                                           ),
+//                                           hintText: "Enter your Name",
+//                                         ),
+//                                       ),
+//                                       const SizedBox(height: 15),
+//                                     ],
+//                                   ),
+//                           ),
+
+//                           // -------------------- EMAIL FIELD --------------------
+//                           const Align(
+//                             alignment: Alignment.centerLeft,
+//                             child: Text("Email",
+//                                 style: TextStyle(fontWeight: FontWeight.w400)),
+//                           ),
+//                           const SizedBox(height: 5),
+//                           TextFormField(
+//                             controller: _emailController,
+//                             validator: _validateEmail,
+//                             keyboardType: TextInputType.emailAddress,
+//                             decoration: InputDecoration(
+//                               border: OutlineInputBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                               ),
+//                               hintText: "Enter your Email",
+//                             ),
+//                           ),
+//                           const SizedBox(height: 15),
+
+//                           // -------------------- PASSWORD FIELD --------------------
+//                           const Align(
+//                             alignment: Alignment.centerLeft,
+//                             child: Text("Password",
+//                                 style: TextStyle(fontWeight: FontWeight.w400)),
+//                           ),
+//                           const SizedBox(height: 5),
+//                           TextFormField(
+//                             controller: _passwordController,
+//                             validator: _validatePassword,
+//                             obscureText: _obscurePassword,
+//                             decoration: InputDecoration(
+//                               border: OutlineInputBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                               ),
+//                               hintText: "Enter your Password",
+
+//                               // Show / hide password icon
+//                               suffixIcon: IconButton(
+//                                 onPressed: () {
+//                                   setState(() => _obscurePassword =
+//                                       !_obscurePassword);
+//                                 },
+//                                 icon: Icon(_obscurePassword
+//                                     ? Icons.visibility
+//                                     : Icons.visibility_off),
+//                               ),
+//                             ),
+//                           ),
+
+//                           const SizedBox(height: 20),
+
+//                           // -------------------- LOGIN / SIGNUP BUTTON --------------------
+//                           SizedBox(
+//                             width: 180,
+//                             child: ElevatedButton(
+//                               onPressed: _handleSubmit,
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Colors.green,
+//                                 shape: RoundedRectangleBorder(
+//                                   borderRadius: BorderRadius.circular(8),
+//                                 ),
+//                               ),
+//                               child: Text(
+//                                 buttonText,
+//                                 style: const TextStyle(
+//                                   color: Colors.black,
+//                                   fontWeight: FontWeight.w600,
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+
+//                           const SizedBox(height: 10),
+
+//                           // -------------------- SWITCH LOGIN <-> SIGNUP --------------------
+//                           TextButton(
+//                             onPressed: _toggleMode,
+//                             child: Text(
+//                               switchText,
+//                               style: const TextStyle(
+//                                   decoration: TextDecoration.underline),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -9,6 +9,7 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  bool isLogin = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,11 +61,40 @@ class _loginPageState extends State<loginPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      child: isLogin
+                          ? const SizedBox.shrink()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    "Name",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                TextField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: "Enter your Name",
+                                    hintStyle: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+
+                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
                         "Email",
-                        style: TextStyle(fontWeight: FontWeight.w400),
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
                     TextField(
@@ -79,7 +109,7 @@ class _loginPageState extends State<loginPage> {
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
                         "Password",
-                        style: TextStyle(fontWeight: FontWeight.w400),
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
                     TextField(
@@ -89,11 +119,35 @@ class _loginPageState extends State<loginPage> {
                         hintStyle: TextStyle(fontSize: 13),
                       ),
                     ),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                      child: !isLogin
+                          ? const SizedBox.shrink()
+                          : Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Forget Password?",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      49,
+                                      52,
+                                      206,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ),
                   ],
                 ),
               ),
             ),
-           
+
             Container(
               width: 180,
               child: ElevatedButton(
@@ -105,14 +159,36 @@ class _loginPageState extends State<loginPage> {
                   backgroundColor: Colors.green,
                 ),
 
-                child: Text(
-                  "Login",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                    fontSize: 14,
-                  ),
-                ),
+                child: isLogin
+                    ? Text(
+                        "Login",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      )
+                    : Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  isLogin = !isLogin;
+                });
+              },
+              child: Text(
+                isLogin
+                    ? "Don't have an account? Sign Up"
+                    : "Already have an account? Login",
               ),
             ),
           ],
