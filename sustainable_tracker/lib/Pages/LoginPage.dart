@@ -55,15 +55,63 @@ class _loginPageState extends State<loginPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(25.0),
               child: Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Email", textAlign: TextAlign.left),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Email",
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                    ),
                     TextField(
-                      decoration: InputDecoration(border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Enter your Email",
+                        hintStyle: TextStyle(fontSize: 13),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Password",
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Enter your Passsword",
+                        hintStyle: TextStyle(fontSize: 13),
+                      ),
                     ),
                   ],
+                ),
+              ),
+            ),
+           
+            Container(
+              width: 180,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+
+                child: Text(
+                  "Login",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
