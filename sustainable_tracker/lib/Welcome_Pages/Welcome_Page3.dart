@@ -65,7 +65,7 @@ class Welcome_Page3 extends StatelessWidget {
                           ),
                           child: Center(
                             child: Icon(
-                              FontAwesomeIcons.leaf,
+                              Icons.trending_down,
                               size: 30,
                               color: Colors.white,
                             ),

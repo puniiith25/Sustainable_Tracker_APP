@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sustainable_tracker/Pages/Home.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({super.key});
@@ -151,7 +152,12 @@ class _loginPageState extends State<loginPage> {
             SizedBox(
               width: 180,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
