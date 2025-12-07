@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sustainable_tracker/Pages/LoginPage.dart';
+import 'package:sustainable_tracker/Welcome_Pages/Welcome_Page2.dart';
 
 class Welcome_Page1 extends StatelessWidget {
   const Welcome_Page1({super.key});
@@ -22,7 +24,10 @@ class Welcome_Page1 extends StatelessWidget {
                   padding: const EdgeInsets.all(20.0),
                   child: TextButton(
                     onPressed: () {
-                      // action here
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => loginPage()),
+                      );
                     },
                     child: Text(
                       "Skip",
@@ -115,7 +120,12 @@ class Welcome_Page1 extends StatelessWidget {
               SizedBox(
                 width: 180,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Welcome_Page2()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
