@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sustainable_tracker/Pages/LoginPage.dart';
-import 'package:sustainable_tracker/Pages/signup.dart';
+import 'package:sustainable_tracker/Welcome_Pages/Welcome_Page1.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: loginPage(),
+      home: Welcome_Page1(),
     );
   }
 }
