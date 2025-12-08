@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sustainable_tracker/Pages/LoginPage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sustainable_tracker/Views/Pages/signup.dart';
+import 'package:sustainable_tracker/Views/Welcome_Pages/Welcome_Page2.dart';
 
-class Welcome_Page3 extends StatelessWidget {
-  const Welcome_Page3({super.key});
+class Welcome_Page1 extends StatelessWidget {
+  const Welcome_Page1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class Welcome_Page3 extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => loginPage()),
+                        MaterialPageRoute(builder: (context) => login_Page()),
                       );
                     },
                     child: Text(
@@ -64,23 +66,18 @@ class Welcome_Page3 extends StatelessWidget {
                           ),
                           child: Center(
                             child: Icon(
-                              Icons.trending_down,
+                              FontAwesomeIcons.leaf,
                               size: 30,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'assets/images/Reduce_save.jpg',
-                              fit: BoxFit.cover,
-                              width: 300,
-                              height: 220,
-                            ),
+                            child: Image.asset('assets/images/leaf.jpeg'),
                           ),
                         ),
                       ],
@@ -95,7 +92,7 @@ class Welcome_Page3 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Reduce & Save",
+                        "Track Your Carbon  Footprint",
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -106,12 +103,12 @@ class Welcome_Page3 extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 19),
                         child: Text(
-                          'Track your progress, celebrate milestones, and make a real difference for our planet.',
+                          'Monitor the environmental impact of every Purchase you make understand your carbon emission',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -126,7 +123,7 @@ class Welcome_Page3 extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => loginPage()),
+                      MaterialPageRoute(builder: (context) => Welcome_Page2()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -137,9 +134,9 @@ class Welcome_Page3 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Get Started",
+                        "Next",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 16,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),

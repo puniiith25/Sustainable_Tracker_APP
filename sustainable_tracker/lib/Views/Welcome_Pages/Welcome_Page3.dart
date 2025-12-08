@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sustainable_tracker/Pages/LoginPage.dart';
-import 'package:sustainable_tracker/Welcome_Pages/Welcome_Page3.dart';
+import 'package:sustainable_tracker/Views/Pages/signup.dart';
 
-class Welcome_Page2 extends StatelessWidget {
-  const Welcome_Page2({super.key});
+class Welcome_Page3 extends StatelessWidget {
+  const Welcome_Page3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +24,7 @@ class Welcome_Page2 extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => loginPage()),
+                        MaterialPageRoute(builder: (context) => login_Page()),
                       );
                     },
                     child: Text(
@@ -66,22 +64,22 @@ class Welcome_Page2 extends StatelessWidget {
                           ),
                           child: Center(
                             child: Icon(
-                              FontAwesomeIcons.bagShopping,
+                              Icons.trending_down,
                               size: 30,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 5),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.asset(
-                              'assets/images/Shop_Sustainable.png',
+                              'assets/images/Reduce_save.jpg',
                               fit: BoxFit.cover,
                               width: 300,
-                              height: 225,
+                              height: 220,
                             ),
                           ),
                         ),
@@ -97,7 +95,7 @@ class Welcome_Page2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Shop Sustainably",
+                        "Reduce & Save",
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -108,7 +106,7 @@ class Welcome_Page2 extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 19),
                         child: Text(
-                          'Get personalized recommendations for eco-friendly alternatives to reduce your environmental impact.',
+                          'Track your progress, celebrate milestones, and make a real difference for our planet.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -128,7 +126,7 @@ class Welcome_Page2 extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => Welcome_Page3()),
+                      MaterialPageRoute(builder: (context) => login_Page()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -139,9 +137,9 @@ class Welcome_Page2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Next",
+                        "Get Started",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),

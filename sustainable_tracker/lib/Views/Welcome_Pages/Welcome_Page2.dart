@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sustainable_tracker/Pages/LoginPage.dart';
-import 'package:sustainable_tracker/Welcome_Pages/Welcome_Page2.dart';
+import 'package:sustainable_tracker/Views/Pages/signup.dart';
+import 'package:sustainable_tracker/Views/Welcome_Pages/Welcome_Page3.dart';
 
-class Welcome_Page1 extends StatelessWidget {
-  const Welcome_Page1({super.key});
+class Welcome_Page2 extends StatelessWidget {
+  const Welcome_Page2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Welcome_Page1 extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => loginPage()),
+                        MaterialPageRoute(builder: (context) => login_Page()),
                       );
                     },
                     child: Text(
@@ -66,18 +66,23 @@ class Welcome_Page1 extends StatelessWidget {
                           ),
                           child: Center(
                             child: Icon(
-                              FontAwesomeIcons.leaf,
+                              FontAwesomeIcons.bagShopping,
                               size: 30,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.asset('assets/images/leaf.jpeg'),
+                            child: Image.asset(
+                              'assets/images/Shop_Sustainable.png',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 225,
+                            ),
                           ),
                         ),
                       ],
@@ -92,7 +97,7 @@ class Welcome_Page1 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Track Your Carbon  Footprint",
+                        "Shop Sustainably",
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -103,12 +108,12 @@ class Welcome_Page1 extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 19),
                         child: Text(
-                          'Monitor the environmental impact of every Purchase you make understand your carbon emission',
+                          'Get personalized recommendations for eco-friendly alternatives to reduce your environmental impact.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
-                            fontSize: 15,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -123,7 +128,7 @@ class Welcome_Page1 extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => Welcome_Page2()),
+                      MaterialPageRoute(builder: (context) => Welcome_Page3()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
