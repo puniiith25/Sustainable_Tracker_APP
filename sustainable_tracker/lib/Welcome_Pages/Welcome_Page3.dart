@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sustainable_tracker/Pages/LoginPage.dart';
 
 class Welcome_Page3 extends StatelessWidget {

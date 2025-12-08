@@ -1,301 +1,453 @@
-// import 'package:flutter/material.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// login_page.dart
+import 'dart:convert'; // For jsonEncode / jsonDecode
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sustainable_tracker/Pages/Home.dart';
 
-// class loginPage extends StatefulWidget {
-//   const loginPage({super.key});
+// NEW: HTTP package to send requests
+import 'package:http/http.dart' as http;
 
-//   @override
-//   State<loginPage> createState() => _loginPageState();
-// }
+// NEW: Secure storage to safely store JWT on device (recommended for mobile)
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-// class _loginPageState extends State<loginPage> with TickerProviderStateMixin {
-//   // Form key to validate all input fields
-//   final _formKey = GlobalKey<FormState>();
+class loginPage2 extends StatefulWidget {
+  const loginPage2({super.key});
 
-//   // Controllers to read user input values
-//   final TextEditingController _nameController = TextEditingController();
-//   final TextEditingController _emailController = TextEditingController();
-//   final TextEditingController _passwordController = TextEditingController();
+  @override
+  State<loginPage2> createState() => _loginPageState();
+}
 
-//   // This variable controls whether we are in Login or Sign-up mode
-//   bool isLogin = true;
+class _loginPageState extends State<loginPage2> {
+  // Form Key and controllers (same as your original)
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-//   // For showing or hiding password
-//   bool _obscurePassword = true;
+  // NEW: secure storage instance to save JWT securely on device
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-//   // -------------------- VALIDATION FUNCTIONS --------------------
+  // NEW: Base URL for your backend. <-- CHANGE THIS to your real backend URL
+  final String _baseUrl = 'http://localhost:8000/api/auth';
 
-//   String? _validateName(String? v) {
-//     // Only validate name in SIGN-UP mode
-//     if (!isLogin) {
-//       if (v == null || v.trim().isEmpty) return 'Please enter name';
-//       if (v.trim().length < 2) return 'Name too short';
-//     }
-//     return null;
-//   }
+  // Keep existing state variable used to toggle login/signup UI
+  bool isLogin = true;
 
-//   String? _validateEmail(String? v) {
-//     if (v == null || v.trim().isEmpty) return 'Please enter email';
-//     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-//     if (!emailRegex.hasMatch(v.trim())) return 'Enter a valid email';
-//     return null;
-//   }
+  // NEW: loading state to disable button while request is in progress
+  bool _loading = false;
 
-//   String? _validatePassword(String? v) {
-//     if (v == null || v.isEmpty) return 'Please enter password';
-//     if (v.length < 6) return 'Password should be at least 6 chars';
-//     return null;
-//   }
+  // -------------------------
+  // Validation functions (unchanged)
+  // -------------------------
+  String? _validateName(String? v) {
+    // Only validate name in SIGN-UP mode
+    if (!isLogin) {
+      if (v == null || v.trim().isEmpty) return 'Please enter name';
+      if (v.trim().length < 2) return 'Name too short';
+    }
+    return null;
+  }
 
-//   // -------------------- SUBMIT HANDLER --------------------
+  String? _validateEmail(String? v) {
+    if (v == null || v.trim().isEmpty) return 'Please enter email';
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(v.trim())) return 'Enter a valid email';
+    return null;
+  }
 
-//   void _handleSubmit() {
-//     // Validate all fields first
-//     if (!_formKey.currentState!.validate()) return;
+  String? _validatePassword(String? v) {
+    if (v == null || v.isEmpty) return 'Please enter password';
+    if (v.length < 6) return 'Password should be at least 6 chars';
+    return null;
+  }
 
-//     final name = _nameController.text.trim();
-//     final email = _emailController.text.trim();
-//     final password = _passwordController.text;
+  // -------------------------
+  // NEW: Networking helpers
+  // These are minimal helpers to call your backend login/signup endpoints,
+  // parse responses and store/read tokens.
+  // -------------------------
 
-//     if (isLogin) {
-//       // LOGIN LOGIC HERE
-//       debugPrint("LOGIN -> Email: $email Password: $password");
+  // Minimal POST for login: returns map { 'status': int, 'body': String }
+  Future<Map<String, dynamic>> _loginRequest(
+    String email,
+    String password,
+  ) async {
+    final resp = await http.post(
+      Uri.parse('$_baseUrl/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+    return {'status': resp.statusCode, 'body': resp.body};
+  }
 
-//       ScaffoldMessenger.of(context)
-//           .showSnackBar(const SnackBar(content: Text("Logged in (demo)")));
-//     } else {
-//       // SIGNUP LOGIC HERE
-//       debugPrint("SIGNUP -> Name: $name Email: $email Password: $password");
+  // Minimal POST for signup: returns map { 'status': int, 'body': String }
+  Future<Map<String, dynamic>> _signupRequest(
+    String name,
+    String email,
+    String password,
+  ) async {
+    final resp = await http.post(
+      Uri.parse('$_baseUrl/signup'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'name': name, 'email': email, 'password': password}),
+    );
+    return {'status': resp.statusCode, 'body': resp.body};
+  }
 
-//       ScaffoldMessenger.of(context)
-//           .showSnackBar(const SnackBar(content: Text("Signed up (demo)")));
-//     }
-//   }
+  // Save token securely
+  Future<void> _saveToken(String token) async {
+    await _secureStorage.write(key: 'jwt', value: token);
+  }
 
-//   // -------------------- TOGGLE LOGIN / SIGNUP --------------------
+  // Read token when needed
+  Future<String?> _readToken() async {
+    return await _secureStorage.read(key: 'jwt');
+  }
 
-//   void _toggleMode() {
-//     setState(() {
-//       // Switch between Login & SignUp modes
-//       isLogin = !isLogin;
+  // Minimal helper to request protected resource using saved token.
+  // Example usage: await _getProtectedResource('/profile');
+  Future<Map<String, dynamic>> _getProtectedResource(String path) async {
+    final token = await _readToken();
+    final resp = await http.get(
+      Uri.parse('$_baseUrl$path'),
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    return {'status': resp.statusCode, 'body': resp.body};
+  }
 
-//       // Clear name when switching back to login
-//       if (isLogin) {
-//         _nameController.clear();
-//       }
-//     });
-//   }
+  // Parse body safely into Map if possible, else return raw string under 'raw'
+  Map<String, dynamic> _parseResponse(String body) {
+    try {
+      final parsed = jsonDecode(body);
+      if (parsed is Map<String, dynamic>) return parsed;
+      return {'raw': body};
+    } catch (_) {
+      return {'raw': body};
+    }
+  }
 
-//   @override
-//   void dispose() {
-//     // Dispose controllers to free memory
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _passwordController.dispose();
-//     super.dispose();
-//   }
+  // -------------------------
+  // Existing _handleSubmit with minimal changes:
+  // - Calls backend via helpers
+  // - Stores token if returned
+  // - Shows snackbars for errors / success
+  // Note: I preserved your UI flow and only replaced the demo logic.
+  // -------------------------
+  void _handleSubmit() async {
+    // Validate all fields first
+    if (!_formKey.currentState!.validate()) return;
 
-//   // -------------------- UI STARTS HERE --------------------
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     // Text changes based on mode
-//     final titleText = isLogin ? 'Login' : 'Create Account';
-//     final buttonText = isLogin ? 'Login' : 'Sign Up';
-//     final switchText =
-//         isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
+    // Start loading state (optional, but recommended)
+    setState(() {
+      _loading = true;
+    });
 
-//     return Scaffold(
-//       body: Center(
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               // -------------------- APP ICON --------------------
-//               Container(
-//                 width: 70,
-//                 height: 70,
-//                 decoration: BoxDecoration(
-//                   color: Colors.green,
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//                 child: const Center(
-//                   child: Icon(FontAwesomeIcons.leaf,
-//                       size: 30, color: Colors.white),
-//                 ),
-//               ),
+    try {
+      if (isLogin) {
+        // -------------------
+        // LOGIN FLOW -> call backend
+        // -------------------
+        final resp = await _loginRequest(email, password);
+        final status = resp['status'] as int;
+        final bodyStr = resp['body'] as String;
+        final body = _parseResponse(bodyStr);
 
-//               const SizedBox(height: 20),
+        if (status == 200) {
+          // Expecting backend to return token in JSON: { "token": "..." }
+          final token = body['token'] ?? body['accessToken'];
+          if (token != null) {
+            await _saveToken(token);
+            if (!mounted) return;
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Logged in")));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          } else {
+            // If backend uses cookies instead of returning token, mobile can't rely on cookies.
+            // But still let user proceed (optional) or show helpful message.
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Logged in (no token returned)")),
+            );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          }
+        } else {
+          final msg =
+              body['message'] ?? body['error'] ?? body['raw'] ?? 'Login failed';
+          if (!mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg.toString())));
+        }
+      } else {
+        // -------------------
+        // SIGNUP FLOW -> call backend
+        // -------------------
+        final resp = await _signupRequest(name, email, password);
+        final status = resp['status'] as int;
+        final bodyStr = resp['body'] as String;
+        final body = _parseResponse(bodyStr);
 
-//               // -------------------- TITLE TEXT --------------------
-//               Column(
-//                 children: [
-//                   Text(
-//                     "Sustainable Shoping",
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.w500,
-//                       color: Colors.green.withOpacity(0.9),
-//                     ),
-//                   ),
-//                   const Text(
-//                     'Track your carbon footprint',
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.w400,
-//                       color: Colors.black,
-//                     ),
-//                   ),
-//                 ],
-//               ),
+        if (status == 201 || status == 200) {
+          final token = body['token'] ?? body['accessToken'];
+          if (token != null) {
+            await _saveToken(token);
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Signed up & logged in")),
+            );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          } else {
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Signed up (no token returned)")),
+            );
+          }
+        } else {
+          final msg =
+              body['message'] ??
+              body['error'] ??
+              body['raw'] ??
+              'Signup failed';
+          if (!mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg.toString())));
+        }
+      }
+    } catch (e) {
+      // Network or unexpected error
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Network error: $e')));
+    } finally {
+      // Stop loading state
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    }
+  }
 
-//               const SizedBox(height: 20),
+  @override
+  void dispose() {
+    // Dispose controllers to free memory
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-//               // -------------------- FORM CARD --------------------
-//               Padding(
-//                 padding: const EdgeInsets.all(25.0),
-//                 child: Card(
-//                   elevation: 5,
-//                   shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(12)),
-//                   child: Padding(
-//                     padding: const EdgeInsets.all(20.0),
+  // Helper to build the action button (keeps UI tidy)
+  Widget _buildActionButton() {
+    return SizedBox(
+      width: 180,
+      child: ElevatedButton(
+        onPressed: _loading ? null : _handleSubmit,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          backgroundColor: Colors.green,
+        ),
+        child: _loading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : Text(
+                isLogin ? "Login" : "Sign Up",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+      ),
+    );
+  }
 
-//                     // FORM STARTS HERE
-//                     child: Form(
-//                       key: _formKey,
-//                       child: Column(
-//                         children: [
-//                           // FORM TITLE
-//                           Text(
-//                             titleText,
-//                             style: const TextStyle(
-//                                 fontSize: 18, fontWeight: FontWeight.w600),
-//                           ),
-//                           const SizedBox(height: 20),
-
-//                           // -------------------- NAME FIELD (Sign-Up only) --------------------
-//                           AnimatedSize(
-//                             duration: const Duration(milliseconds: 200),
-//                             curve: Curves.easeInOut,
-//                             child: isLogin
-//                                 ? const SizedBox.shrink() // Hide in login
-//                                 : Column(
-//                                     crossAxisAlignment:
-//                                         CrossAxisAlignment.start,
-//                                     children: [
-//                                       const Text("Name",
-//                                           style: TextStyle(
-//                                               fontWeight: FontWeight.w400)),
-//                                       const SizedBox(height: 5),
-//                                       TextFormField(
-//                                         controller: _nameController,
-//                                         validator: _validateName,
-//                                         decoration: InputDecoration(
-//                                           border: OutlineInputBorder(
-//                                             borderRadius:
-//                                                 BorderRadius.circular(8),
-//                                           ),
-//                                           hintText: "Enter your Name",
-//                                         ),
-//                                       ),
-//                                       const SizedBox(height: 15),
-//                                     ],
-//                                   ),
-//                           ),
-
-//                           // -------------------- EMAIL FIELD --------------------
-//                           const Align(
-//                             alignment: Alignment.centerLeft,
-//                             child: Text("Email",
-//                                 style: TextStyle(fontWeight: FontWeight.w400)),
-//                           ),
-//                           const SizedBox(height: 5),
-//                           TextFormField(
-//                             controller: _emailController,
-//                             validator: _validateEmail,
-//                             keyboardType: TextInputType.emailAddress,
-//                             decoration: InputDecoration(
-//                               border: OutlineInputBorder(
-//                                 borderRadius: BorderRadius.circular(8),
-//                               ),
-//                               hintText: "Enter your Email",
-//                             ),
-//                           ),
-//                           const SizedBox(height: 15),
-
-//                           // -------------------- PASSWORD FIELD --------------------
-//                           const Align(
-//                             alignment: Alignment.centerLeft,
-//                             child: Text("Password",
-//                                 style: TextStyle(fontWeight: FontWeight.w400)),
-//                           ),
-//                           const SizedBox(height: 5),
-//                           TextFormField(
-//                             controller: _passwordController,
-//                             validator: _validatePassword,
-//                             obscureText: _obscurePassword,
-//                             decoration: InputDecoration(
-//                               border: OutlineInputBorder(
-//                                 borderRadius: BorderRadius.circular(8),
-//                               ),
-//                               hintText: "Enter your Password",
-
-//                               // Show / hide password icon
-//                               suffixIcon: IconButton(
-//                                 onPressed: () {
-//                                   setState(() => _obscurePassword =
-//                                       !_obscurePassword);
-//                                 },
-//                                 icon: Icon(_obscurePassword
-//                                     ? Icons.visibility
-//                                     : Icons.visibility_off),
-//                               ),
-//                             ),
-//                           ),
-
-//                           const SizedBox(height: 20),
-
-//                           // -------------------- LOGIN / SIGNUP BUTTON --------------------
-//                           SizedBox(
-//                             width: 180,
-//                             child: ElevatedButton(
-//                               onPressed: _handleSubmit,
-//                               style: ElevatedButton.styleFrom(
-//                                 backgroundColor: Colors.green,
-//                                 shape: RoundedRectangleBorder(
-//                                   borderRadius: BorderRadius.circular(8),
-//                                 ),
-//                               ),
-//                               child: Text(
-//                                 buttonText,
-//                                 style: const TextStyle(
-//                                   color: Colors.black,
-//                                   fontWeight: FontWeight.w600,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-
-//                           const SizedBox(height: 10),
-
-//                           // -------------------- SWITCH LOGIN <-> SIGNUP --------------------
-//                           TextButton(
-//                             onPressed: _toggleMode,
-//                             child: Text(
-//                               switchText,
-//                               style: const TextStyle(
-//                                   decoration: TextDecoration.underline),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  // -------------------------
+  // Build UI (kept your original structure)
+  // -------------------------
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Icon(
+                    FontAwesomeIcons.leaf,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                child: Column(
+                  children: [
+                    Text(
+                      "Sustainable Shoping",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.green.withOpacity(0.9),
+                      ),
+                    ),
+                    const Text(
+                      'Track your carbon footprint',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        child: isLogin
+                            ? const SizedBox.shrink()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 8),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      "Name",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  TextFormField(
+                                    controller: _nameController,
+                                    validator: _validateName,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: "Enter your Name",
+                                      hintStyle: TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "Email",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      TextFormField(
+                        controller: _emailController,
+                        validator: _validateEmail,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Enter your Email",
+                          hintStyle: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text(
+                          "Password",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      TextFormField(
+                        controller: _passwordController,
+                        validator: _validatePassword,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Enter your Passsword",
+                          hintStyle: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn,
+                        child: !isLogin
+                            ? const SizedBox.shrink()
+                            : Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forget Password?",
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 49, 52, 206),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              _buildActionButton(),
+              TextButton(
+                onPressed: _loading
+                    ? null
+                    : () {
+                        setState(() {
+                          isLogin = !isLogin;
+                        });
+                      },
+                child: Text(
+                  isLogin
+                      ? "Don't have an account? Sign Up"
+                      : "Already have an account? Login",
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
