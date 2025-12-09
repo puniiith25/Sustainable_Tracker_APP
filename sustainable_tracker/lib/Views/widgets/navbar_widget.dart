@@ -15,6 +15,8 @@ class _NavbarWidgetState extends State<NavbarWidget> {
       valueListenable: selectedPageNotifier,
       builder: (context, selectedPage, child) {
         return NavigationBar(
+          backgroundColor: Colors.white,
+
           destinations: [
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
             NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
