@@ -10,6 +10,6 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text('Progress'));
+    return Scaffold(body: Center(child: Text('Progress')));
   }
 }
