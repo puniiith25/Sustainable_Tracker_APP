@@ -2,7 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -29,12 +28,14 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -42,18 +43,26 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-	<!-- ===========================
-	     App Transport Security (DEV)
-	     Allows HTTP requests during local development
-	     Remove or tighten this before production.
-	     =========================== -->
+	<!-- App queries: allow checking if other apps are installed (used by canLaunchUrl for app schemes) -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>amazon</string>
+		<string>com.amazon.mobile.shopping</string>
+		<string>fb</string>
+		<string>whatsapp</string>
+	</array>
+
+	<!-- App Transport Security -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<!-- Development: currently allowing arbitrary loads.
+		     Remove or tighten before release (see alternative below). -->
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>

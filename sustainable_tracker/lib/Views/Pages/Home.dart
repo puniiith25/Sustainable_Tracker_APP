@@ -1,6 +1,6 @@
+// lib/Views/home/Home.dart
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sustainable_tracker/Views/widgets/navbar_widget.dart';
+import 'package:sustainable_tracker/Views/Pages/Search.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +10,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  void _openCategory(String category) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => searchPage(initialCategory: category)),
+    );
+  }
+
+  Widget _categoryButton(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        onPressed: () => _openCategory(title),
+        child: Text(title, style: const TextStyle(color: Colors.black)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,10 +40,8 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         elevation: 0,
         toolbarHeight: 70,
-
         title: Row(
           children: [
-            // Logo
             Container(
               height: 50,
               width: 50,
@@ -34,8 +55,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(width: 10),
-
-            // App name
             const Text(
               "EcoCart",
               style: TextStyle(
@@ -46,36 +65,10 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-
-        // Bottom search bar
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(40),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-            child: Container(
-              height: 45,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 244, 242, 242),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: "Search...",
-                  prefixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 10),
-                ),
-              ),
-            ),
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-
           child: Column(
             children: [
               Container(
@@ -89,104 +82,97 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Your imapct this Month',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      const Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Your impact this Month',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
+                      const SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Total Purchases:',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: const [
+                                  Text(
+                                    'Total Purchases:',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
-                                    SizedBox(width: 60),
-                                    Text(
-                                      '8',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Carbon Saved:',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(width: 30),
-                                    Text(
-                                      '12.5 kg CO₂',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Divider(color: Colors.white, thickness: 1),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Text('🌳', style: TextStyle(fontSize: 40)),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(
-                                    'Equivalent to 2 trees palnted',
-                                    maxLines: 4,
+                                  ),
+                                  SizedBox(width: 60),
+                                  Text(
+                                    '8',
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: const [
+                                  Text(
+                                    'Carbon Saved:',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 30),
+                                  Text(
+                                    '12.5 kg CO₂',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Divider(color: Colors.white, thickness: 1),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                        child: Row(
+                          children: const [
+                            Text('🌳', style: TextStyle(fontSize: 40)),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Text(
+                                  'Equivalent to 2 trees planted',
+                                  maxLines: 4,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -194,116 +180,27 @@ class _HomeState extends State<Home> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Browse by category',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+              const SizedBox(height: 12),
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Browse by category',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                child: Wrap(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+              const SizedBox(height: 8),
 
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Fashion',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Books',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Electronics',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Home & kitchen',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Beauty',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              Wrap(
+                children: [
+                  _categoryButton('Fashion'),
+                  _categoryButton('Books'),
+                  _categoryButton('Electronics'),
+                  _categoryButton('Home & Kitchen'),
+                  _categoryButton('Beauty'),
+                  _categoryButton('Sports'),
+                  _categoryButton('Toys'),
+                  _categoryButton('Grocery'),
+                ],
               ),
             ],
           ),
