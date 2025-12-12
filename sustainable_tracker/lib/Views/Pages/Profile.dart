@@ -24,7 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  final String _baseUrl = 'http://192.168.1.5:8000/api/auth';
+  final String _baseUrl =
+      'https://sustainable-tracker-app.onrender.com/api/auth';
 
   @override
   void initState() {
