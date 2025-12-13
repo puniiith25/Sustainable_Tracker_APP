@@ -55,9 +55,7 @@ The app encourages sustainable living through awareness, tracking, and progress 
 │ └── server.js
 │
 └── README.md
-
----
-
+```
 ---
 
 ## ⚙️ Installation & Setup
