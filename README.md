@@ -67,3 +67,44 @@ git clone https://github.com/puniiith25/Sustainable_Tracker_APP.git
 cd Sustainable_Tracker_APP
 
 ```
+### Backend Setup
+```
+cd backend
+npm install
+```
+## .env file 
+```
+PORT=4000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+CLIENT_ORIGIN=http://localhost:3000
+```
+## Start backend server
+```
+npm run server
+```
+
+### Frontend Setup (Flutter)
+```
+cd frontend
+flutter pub get
+flutter run
+```
+---
+### Author
+
+- Punitha KM
+- 🎓 BTech CSE (2024–2028)
+- 💻 MERN Stack & Flutter Developer
+- 🔗 GitHub: https://github.com/puniiith25
+---
+
+### License
+- This project is licensed under the MIT License.
+- You are free to use, modify, and distribute this project.
+
+---
+
+
+
+...
