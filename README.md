@@ -109,5 +109,5 @@ flutter run
 
 ...
 
-![ER Diagram](https://raw.githubusercontent.com/puniiith25/Sustainable_Tracker_APP/main/project/images/er_diagram.png)
+![ER Diagram](puniiith25/Sustainable_Tracker_APP/main/project/images/er_diagram.png)
 
