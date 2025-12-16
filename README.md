@@ -109,5 +109,5 @@ flutter run
 
 ...
 
-![ER Diagram](puniiith25/Sustainable_Tracker_APP/main/project/images/er_diagram.png)
+![ER Diagram](sustainable_tracker/assets/images/EcoCart.PNG)
 
