@@ -109,5 +109,5 @@ flutter run
 
 ...
 
-![ER Diagram](sustainable_tracker/assets/images/EcoCart.PNG)
+![App Prototype]([sustainable_tracker/assets/images/EcoCart.PNG](https://raw.githubusercontent.com/puniiith25/Sustainable_Tracker_APP/ad9c11805c340d4a16fa66268cfc0de60a98e54d/Gemini_Generated_Image_hll4jchll4jchll4.png))
 
