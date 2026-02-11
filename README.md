@@ -90,6 +90,10 @@ cd frontend
 flutter pub get
 flutter run
 ```
+## 🎨 Figma Design
+
+[Click here to view the Figma Design](https://www.figma.com/file/XXXXXXXXXX)
+
 ---
 ### Author
 
