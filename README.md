@@ -92,7 +92,7 @@ flutter run
 ```
 ## 🎨 Figma Design
 
-[Click here to view the Figma Design]([https://www.figma.com/file/XXXXXXXXXX](https://www.figma.com/design/CaeNb0mqAg7jf8Lihz1CLQ/Untitled?node-id=0-1&t=7H3SPKUrQp34qDZH-1))
+[Click here to view the Figma Design]([(https://www.figma.com/design/CaeNb0mqAg7jf8Lihz1CLQ/Untitled?node-id=0-1&t=7H3SPKUrQp34qDZH-1)])
 
 ---
 ### Author
