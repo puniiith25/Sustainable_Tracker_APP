@@ -24,7 +24,7 @@ The app encourages sustainable living through awareness, tracking, and progress 
 - **Flutter**
 - **Dart**
 - **Font Awesome Icons**
-- **FL Chart** (for graphs & analytics)
+
 
 ### Backend
 - **Node.js**
